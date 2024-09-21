@@ -5,32 +5,37 @@ public class ATMega32 implements microprocessorController {
     private Identification cards;
     private Storage storage;
     private Controller controlSystem;
+    private ATMega32Factory factory;
     public ATMega32() {
+        setFactory();
         setName();
         setTicketingOrIdentification();
         setStorage();
         setController();
     }
 
+    public void setFactory(){
+        factory = new ATMega32Factory();
+    }
+
     public void setName() {
-        name = "ATMega32";
+        name = factory.getName();
     }
 
     public String getName() {
         return name;
     }
     public void setController() {
-        this.controlSystem = new externalController();
+        this.controlSystem = factory.createController();
     }
     public Controller getController() {
         return controlSystem;
     }
     public void setTicketingOrIdentification() {
-        cards = new RFID();
-        cards.setTicketingOrIdentificationName();
+        cards = factory.createIdentification();
     }
     public void setStorage() {
-        this.storage = new SDcard();
+        this.storage = factory.createStorage();
     }
     public Storage getStorage() {
         return storage;

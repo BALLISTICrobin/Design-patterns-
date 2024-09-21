@@ -5,22 +5,28 @@ public class ArduinoMega implements microprocessorController{
     private Identification cards;
     private Storage storage;
     private Controller controlSystem;
+    private ArduinoMegaFactory factory;
 
     public ArduinoMega() {
+        setFactory();
         setName();
         setTicketingOrIdentification();
         setStorage();
         setController();
     }
 
+    public void setFactory(){
+        factory = new ArduinoMegaFactory();
+    }
+
     public void setName() {
-        name = "Arduino Mega";
+        name = factory.getName();
     }
     public void setStorage() {
-        this.storage = new SDcard();
+        this.storage = factory.createStorage();
     }
     public void setController() {
-        this.controlSystem = new externalController();
+        this.controlSystem = factory.createController();
     }
     public Controller getController() {
         return controlSystem;
@@ -33,8 +39,7 @@ public class ArduinoMega implements microprocessorController{
         return name;
     }
     public void setTicketingOrIdentification() {
-        cards = new RFID();
-        cards.setTicketingOrIdentificationName();
+        cards = factory.createIdentification();
     }
 
     public Identification getTicketingOrIdentification() {

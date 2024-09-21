@@ -5,37 +5,42 @@ public class RaspberryPi implements microprocessorController {
     private Identification cards;
     private Storage storage;
     private Controller controlSystem;
+    private RaspberryPiFactory factory;
 
     public RaspberryPi() {
+        setFactory();
         setName();
         setTicketingOrIdentification();
         setStorage();
         setController();
     }
 
+    public void setFactory(){
+        factory = new RaspberryPiFactory();
+    }
+
     public void setName() {
-        name = "Raspberry Pi";
+        name = factory.getName();
     }
 
     public String getName() {
         return name;
     }
     public void setController() {
-        this.controlSystem = new touchScreen();
+        this.controlSystem = factory.createController();
     }
     public Controller getController() {
         return controlSystem;
     }
     public void setTicketingOrIdentification() {
-        cards = new NFC();
-        cards.setTicketingOrIdentificationName();
+        cards = factory.createIdentification();
     }
     public Identification getTicketingOrIdentification() {
         return cards;
     }
 
     public void setStorage() {
-        this.storage = new Integrated();
+        this.storage = factory.createStorage();
     }
     public Storage getStorage() {
         return storage;
