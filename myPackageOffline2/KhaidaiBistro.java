@@ -1,6 +1,7 @@
 package myPackageOffline2;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.*;
 
 public class KhaidaiBistro {
     private ArrayList<menuItem> menuItems;
@@ -84,47 +85,50 @@ public class KhaidaiBistro {
                 if (command.equalsIgnoreCase("Done")) {
                     break;
                 }
-                else if (command.startsWith("Add")) {
+                else if (command.toLowerCase().startsWith("add")) {
                     String itemName = command.substring(4);
                     menuItem item = findItem(itemName);
                     if (item != null) {
                         ((combo) combo).addItem(item);
                     }
                 }
-                else if (command.startsWith("Remove")) {
+                else if (command.toLowerCase().startsWith("remove")) {
                     String itemName = command.substring(7);
                     menuItem item = findItem(itemName);
                     if (item != null) {
                         ((combo) combo).removeItem(item);
                     }
                 }
-                else if (command.startsWith("Free")) {
+                else if (command.toLowerCase().startsWith("free")) {
                     String itemName = command.substring(5);
                     menuItem item = findItem(itemName);
                     if(item!=null){
-                        menuItem freeItem = new freeDecorator(item);
-                        ((combo) combo).addItem(freeItem);
+
+                        ((combo) combo).addFreeItem(item);
                     }
 
                 }
-                else if (command.startsWith("Discount")) {
+                else if (command.toLowerCase().startsWith("discount")) {
                     String discountValue = command.substring(9);
                     discount = Double.parseDouble(discountValue);
                 }
             }
-        menuItem discountCombo = new discountDecorator(combo, discount);
-        menuItems.add(discountCombo);
+//        menuItem discountCombo = new discountDecorator(combo, discount);
+        menuItems.add(combo);
         System.out.println("Your Combo");
         System.out.println(comboName);
         for(menuItem item: ((combo) combo).getItems()){
             System.out.println("-"+item.getDescription());
         }
+        for(menuItem item: ((combo) combo).getFreeItems()) {
+            System.out.println("-" + item.getDescription()+"(Free!!)");
+        }
         System.out.print("Total-");
-        System.out.println(combo.getPrice());
+        System.out.println(Math.ceil(combo.getPrice()) );
         System.out.print("Discount-");
-        System.out.println(discount);
+        System.out.println(discount+"%");
         System.out.print("Discounted total-");
-        System.out.println(discountCombo.getPrice());
+        System.out.println(Math.ceil(((combo) combo).getDiscountedPrice(discount))+" tk");
     }
 
     public static void main(String[] args) {
